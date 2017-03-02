@@ -67,7 +67,7 @@ terminate called after throwing an instance of 'int'
 Aborted (core dumped)
 ```
 
-NOTE: in g++ 6.2.1, it only get one `Throw : 0`. Because the destructor default is noexcept, it terminate the program met the first exception.
+**NOTE:** in g++ 6.2.1, it only get one `Throw : 0`. Because the STL vector's destructor default is noexcept, it terminate the program met the first exception.
 
 What happends? The program is interrupt when object `e` throws exception in destructor, that's why position 5 is not executed.
 But C++ doing a little bit more, it tries to release the object inside the try block, that's why `~OtherObject` is printed out.

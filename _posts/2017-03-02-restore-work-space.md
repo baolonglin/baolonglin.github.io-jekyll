@@ -28,6 +28,9 @@ PROMPT_START="\[$(hostname)\]"
 ORIG_WINDOW_INDEX=`tmux display-message -p '#I'`
 ORIG_PANE_INDEX=`tmux display-message -p '#P'`
 
+TMUX_DISPLAY_ENV=`tmux show-environment DISPLAY | cut -d= -f2`
+UPDATE_DISPLAY="setenv DISPLAY ${TMUX_DISPLAY_ENV}"
+
 for window in `tmux list-windows -F '#I'`; do
     tmux select-window -t $window
 
@@ -41,6 +44,7 @@ for window in `tmux list-windows -F '#I'`; do
                 if [ ! -z "$lastStopApp" ]; then
                     #echo "$lastStopApp Runs on pane $pane window $window" >> ~/start.log
                     #TODO do more checks on APP
+                    tmux send-keys -t ${pane} "${UPDATE_DISPLAY}" Enter
                     tmux send-keys -t ${pane} "${lastStopApp}&" Enter
                 fi
                 break
